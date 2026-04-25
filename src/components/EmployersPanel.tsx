@@ -1,10 +1,25 @@
 import { useState } from "react";
-import { Briefcase, MapPin, Plus, X } from "lucide-react";
+import { Briefcase, MapPin, Plus, X, Users, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { toast } from "sonner";
 
 type Posting = {
@@ -16,11 +31,56 @@ type Posting = {
   matches: number;
 };
 
+type Candidate = {
+  id: string;
+  name: string;
+  location: string;
+  topSkills: string[];
+  match: number;
+};
+
 const SEED: Posting[] = [
   { id: 1, title: "Senior Data Analyst", isco: "2511", location: "Nairobi, KE", skills: ["SQL", "Python", "Tableau"], matches: 142 },
   { id: 2, title: "Civil Engineer (water)", isco: "2142", location: "Dakar, SN", skills: ["AutoCAD", "Hydrology", "Field"], matches: 47 },
   { id: 3, title: "Primary School Teacher", isco: "2341", location: "Kigali, RW", skills: ["Pedagogy", "English"], matches: 318 },
 ];
+
+const FIRST_NAMES = ["Amina", "Kwame", "Fatou", "Thabo", "Chiamaka", "Joseph", "Ngozi", "Sipho", "Aisha", "Mohammed", "Esi", "Ifeoma", "Tendai", "Yara", "Kofi"];
+const LAST_NAMES = ["Otieno", "Mensah", "Diallo", "Mokoena", "Okafor", "Mwangi", "Adeyemi", "Nkosi", "Hassan", "Traoré", "Asante", "Eze", "Moyo", "Khaled", "Boateng"];
+const CITIES = ["Nairobi, KE", "Accra, GH", "Lagos, NG", "Dakar, SN", "Kigali, RW", "Cape Town, ZA", "Addis Ababa, ET", "Cairo, EG", "Kampala, UG", "Abidjan, CI"];
+const EXTRA_SKILLS = ["Communication", "Project mgmt", "Excel", "GIS", "Stakeholder eng.", "Data viz", "QA/QC", "Field research"];
+
+const seededRandom = (seed: number) => {
+  let s = seed;
+  return () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+};
+
+const generateCandidates = (posting: Posting): Candidate[] => {
+  const rand = seededRandom(posting.id * 1000);
+  const count = Math.min(8, Math.max(5, Math.floor(rand() * 6) + 5));
+  const list: Candidate[] = [];
+  for (let i = 0; i < count; i++) {
+    const fn = FIRST_NAMES[Math.floor(rand() * FIRST_NAMES.length)];
+    const ln = LAST_NAMES[Math.floor(rand() * LAST_NAMES.length)];
+    const city = CITIES[Math.floor(rand() * CITIES.length)];
+    const numCore = Math.min(posting.skills.length, Math.floor(rand() * posting.skills.length) + 1);
+    const core = [...posting.skills].sort(() => rand() - 0.5).slice(0, numCore);
+    const extras = [...EXTRA_SKILLS].sort(() => rand() - 0.5).slice(0, Math.floor(rand() * 2) + 1);
+    const topSkills = [...core, ...extras].slice(0, 4);
+    const match = Math.floor(98 - i * (5 + rand() * 4) - rand() * 3);
+    list.push({
+      id: `cand_${posting.id}_${i}`,
+      name: `${fn} ${ln}`,
+      location: city,
+      topSkills,
+      match: Math.max(42, match),
+    });
+  }
+  return list.sort((a, b) => b.match - a.match);
+};
 
 export const EmployersPanel = () => {
   const [postings, setPostings] = useState<Posting[]>(SEED);
@@ -30,6 +90,7 @@ export const EmployersPanel = () => {
   const [desc, setDesc] = useState("");
   const [skill, setSkill] = useState("");
   const [draftSkills, setDraftSkills] = useState<string[]>([]);
+  const [viewing, setViewing] = useState<Posting | null>(null);
 
   const addSkill = () => {
     const v = skill.trim();
@@ -58,6 +119,8 @@ export const EmployersPanel = () => {
     toast.success("Vacancy posted to Meridian");
     setTitle(""); setIsco(""); setLocation(""); setDesc(""); setDraftSkills([]);
   };
+
+  const candidates = viewing ? generateCandidates(viewing) : [];
 
   return (
     <div className="grid lg:grid-cols-12 gap-10">
@@ -153,10 +216,85 @@ export const EmployersPanel = () => {
                   </Badge>
                 ))}
               </div>
+              <div className="mt-4 pt-4 border-t border-foreground/10">
+                <Button
+                  onClick={() => setViewing(p)}
+                  variant="outline"
+                  className="rounded-none border-foreground hover:bg-foreground hover:text-background w-full text-xs font-mono uppercase tracking-wider"
+                >
+                  <Users className="h-3.5 w-3.5" />
+                  View candidates
+                </Button>
+              </div>
             </article>
           ))}
         </div>
       </aside>
+
+      <Dialog open={!!viewing} onOpenChange={(o) => !o && setViewing(null)}>
+        <DialogContent className="max-w-4xl rounded-none border-foreground/20 bg-card">
+          <DialogHeader>
+            <p className="eyebrow mb-1">Match dossier</p>
+            <DialogTitle className="font-serif text-2xl font-semibold">
+              {viewing?.title}
+            </DialogTitle>
+            <DialogDescription className="font-mono text-xs">
+              ISCO {viewing?.isco} · {viewing?.location} · {candidates.length} ranked candidates
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="border border-foreground/15 mt-2">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-foreground/15 hover:bg-transparent">
+                  <TableHead className="font-mono text-[10px] uppercase tracking-wider w-20">Match</TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-wider">Name</TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-wider">Location</TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-wider">Top skills</TableHead>
+                  <TableHead className="font-mono text-[10px] uppercase tracking-wider w-32 text-right">Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {candidates.map((c) => (
+                  <TableRow key={c.id} className="border-foreground/10">
+                    <TableCell>
+                      <div className="flex items-baseline gap-1">
+                        <span className="stat-num text-xl text-accent">{c.match}</span>
+                        <span className="text-[10px] font-mono text-muted-foreground">%</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-serif font-semibold">{c.name}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground font-mono text-xs">
+                      <span className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3" /> {c.location}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {c.topSkills.map((s) => (
+                          <Badge key={s} variant="outline" className="rounded-none border-foreground/30 font-normal text-[10px]">
+                            {s}
+                          </Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        size="sm"
+                        onClick={() => toast.success(`Outreach sent to ${c.name}`)}
+                        className="bg-foreground text-background hover:bg-accent rounded-none text-xs font-mono uppercase tracking-wider"
+                      >
+                        <Mail className="h-3 w-3" />
+                        Contact
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
