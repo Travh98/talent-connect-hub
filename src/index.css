@@ -1,42 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Editorial / institutional design system — OECD / World Bank inspired.
+   Muted navy + warm ochre accent, generous whitespace, serif headlines.
+   All colors MUST be HSL. */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 38 33% 97%;
+    --foreground: 215 45% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 45% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 45% 14%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 215 55% 18%;
+    --primary-foreground: 38 33% 97%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 215 25% 92%;
+    --secondary-foreground: 215 45% 14%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 38 20% 93%;
+    --muted-foreground: 215 15% 42%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 28 70% 48%;
+    --accent-foreground: 38 33% 97%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 38 33% 97%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 215 20% 86%;
+    --input: 215 20% 86%;
+    --ring: 215 55% 18%;
 
-    --radius: 0.5rem;
+    /* Editorial tokens */
+    --ink: 215 50% 10%;
+    --paper: 38 33% 97%;
+    --rule: 215 30% 20%;
+    --ochre: 28 70% 48%;
+    --ochre-soft: 32 55% 88%;
+    --teal: 188 45% 32%;
+    --crimson: 355 60% 42%;
+    --chart-1: 215 55% 25%;
+    --chart-2: 28 70% 48%;
+    --chart-3: 188 45% 32%;
+    --chart-4: 355 60% 42%;
+    --chart-5: 42 75% 55%;
+
+    --shadow-editorial: 0 1px 0 0 hsl(215 30% 20% / 0.08), 0 12px 32px -16px hsl(215 50% 10% / 0.18);
+    --gradient-paper: linear-gradient(180deg, hsl(38 33% 97%) 0%, hsl(38 25% 94%) 100%);
+
+    --radius: 0.25rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -99,7 +118,38 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    background-image: radial-gradient(hsl(var(--rule) / 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Fraunces', 'Times New Roman', serif;
+    letter-spacing: -0.015em;
+  }
+
+  .font-mono, .tabular {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .rule-top {
+    @apply border-t-2 border-foreground/90 pt-2;
+  }
+  .eyebrow {
+    @apply text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground;
+  }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    letter-spacing: -0.03em;
   }
 }
