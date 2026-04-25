@@ -136,7 +136,7 @@ export const EmployeesPanel = () => {
             </div>
 
             <Button
-              onClick={() => toast.success("Profile published to Meridian")}
+              onClick={() => toast.success("Profile published to CandidateConnect")}
               className="bg-foreground text-background hover:bg-accent rounded-none px-6"
             >
               Publish profile
@@ -201,7 +201,7 @@ export const EmployeesPanel = () => {
             </dl>
 
             <div className="mt-7 pt-5 border-t border-foreground/15 text-xs text-muted-foreground italic">
-              "Profiles are matched to ISCO-08 occupations and surfaced anonymously to vetted employers."
+              "Profiles are matched to ISCO-08 occupations and shared with vetted employers under your full name and contact details — this directory is not anonymous."
             </div>
           </div>
         </div>
