@@ -17,7 +17,7 @@ export const Masthead = () => {
         </div>
         <div className="lg:col-span-4 lg:border-l lg:border-foreground/20 lg:pl-8">
           <p className="text-base leading-relaxed text-muted-foreground">
-            Meridian is a shared dashboard for the three sides of work — the people seeking it,
+            CandidateConnect is a shared dashboard for the three sides of work — the people seeking it,
             the firms offering it, and the policymakers shaping its conditions. Built on the
             ILO occupational taxonomy.
           </p>
