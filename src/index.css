@@ -118,7 +118,38 @@
     @apply border-border;
   }
 
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    background-image: radial-gradient(hsl(var(--rule) / 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Fraunces', 'Times New Roman', serif;
+    letter-spacing: -0.015em;
+  }
+
+  .font-mono, .tabular {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .rule-top {
+    @apply border-t-2 border-foreground/90 pt-2;
+  }
+  .eyebrow {
+    @apply text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground;
+  }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    letter-spacing: -0.03em;
   }
 }
