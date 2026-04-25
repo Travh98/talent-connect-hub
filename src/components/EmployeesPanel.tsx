@@ -136,7 +136,7 @@ export const EmployeesPanel = () => {
             </div>
 
             <Button
-              onClick={() => toast.success("Profile published to Meridian")}
+              onClick={() => toast.success("Profile published to CandidateConnect")}
               className="bg-foreground text-background hover:bg-accent rounded-none px-6"
             >
               Publish profile
