@@ -56,7 +56,7 @@ const Index = () => {
         <footer id="about" className="border-t border-foreground/15 mt-20">
           <div className="container py-10 grid md:grid-cols-3 gap-6 text-sm">
             <div>
-              <div className="font-serif text-lg font-semibold">Meridian</div>
+              <div className="font-serif text-lg font-semibold">CandidateConnect</div>
               <p className="text-muted-foreground mt-1">A labour market observatory built on the ILOSTAT taxonomy.</p>
             </div>
             <div className="font-mono text-xs text-muted-foreground uppercase tracking-wider">
