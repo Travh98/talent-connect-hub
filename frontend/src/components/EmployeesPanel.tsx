@@ -559,7 +559,7 @@ export const EmployeesPanel = ({
 
             <dl className="mt-7 space-y-4 text-sm">
               {[
-                ["Country", country || "—"],
+                ["Country", COUNTRIES.find((c) => c.code === countryCode)?.name ?? countryCode],
                 ["Education", education || "—"],
                 ["Work experience", hasWorked === null ? "—" : hasWorked ? workDuration || "Yes" : "None"],
                 ["Work type sought", workSchedule || "—"],
