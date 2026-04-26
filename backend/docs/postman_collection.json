@@ -1,0 +1,194 @@
+{
+  "info": {
+    "name": "UNMAPPED Skills Passport Protocol",
+    "description": "API contract tests for the skills-passport protocol. Import this collection into Postman. Set the `base_url` environment variable to your server (default: http://localhost:8000).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /passport/health — liveness check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/passport/health",
+              "host": ["{{base_url}}"],
+              "path": ["passport", "health"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Body is ok', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.equal('ok');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Passport Generation",
+      "item": [
+        {
+          "name": "POST /passport/generate — Ghana, phone repair",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"raw_text\": \"I have been repairing mobile phones and small electronics since I was 17. I run my own shop and teach younger kids basic coding from YouTube.\",\n  \"country_code\": \"GHA\",\n  \"locale\": \"en\",\n  \"education_level\": \"secondary school certificate\",\n  \"languages\": [\"English\", \"Twi\"],\n  \"years_experience\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/passport/generate",
+              "host": ["{{base_url}}"],
+              "path": ["passport", "generate"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Response is JSON-LD passport', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body['@type']).to.equal('passport:SkillsPassport');",
+                  "  pm.expect(body['@id']).to.include('urn:unmapped:passport:');",
+                  "  pm.expect(body['@context']).to.be.an('object');",
+                  "  pm.expect(body['passport:skillClaims']).to.be.an('array');",
+                  "  pm.expect(body['passport:country']).to.equal('GHA');",
+                  "});",
+                  "pm.test('Schema version present', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body['passport:schemaVersion']).to.equal('1.0.0');",
+                  "});",
+                  "pm.test('Each claim has required fields', () => {",
+                  "  const claims = pm.response.json()['passport:skillClaims'];",
+                  "  claims.forEach(claim => {",
+                  "    pm.expect(claim).to.have.property('passport:localLabel');",
+                  "    pm.expect(claim).to.have.property('passport:confidence');",
+                  "    pm.expect(claim).to.have.property('passport:isResolved');",
+                  "    pm.expect(claim).to.have.property('skos:prefLabel');",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /passport/generate — Kenya, country swap demo",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"raw_text\": \"I have been repairing mobile phones and small electronics since I was 17. I run my own shop and teach younger kids basic coding from YouTube.\",\n  \"country_code\": \"KEN\",\n  \"locale\": \"en\",\n  \"education_level\": \"secondary school certificate\",\n  \"languages\": [\"English\", \"Swahili\"],\n  \"years_experience\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/passport/generate",
+              "host": ["{{base_url}}"],
+              "path": ["passport", "generate"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Country is KEN', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body['passport:country']).to.equal('KEN');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /passport/generate — 400 unknown country",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"raw_text\": \"I weld metal.\",\n  \"country_code\": \"ZZZ\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/passport/generate",
+              "host": ["{{base_url}}"],
+              "path": ["passport", "generate"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /passport/generate — 422 missing raw_text",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"country_code\": \"GHA\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/passport/generate",
+              "host": ["{{base_url}}"],
+              "path": ["passport", "generate"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 422', () => pm.response.to.have.status(422));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
