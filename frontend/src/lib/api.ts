@@ -50,9 +50,16 @@ export async function getMarket(countryCode: string): Promise<MarketData> {
 }
 
 export async function getKpiSummary(): Promise<CountryKPI[]> {
-  return get<CountryKPI[]>("/market/kpi-summary");
+  const res = await fetch("/data/kpi_summary.json");
+  if (!res.ok) throw new Error("Failed to load KPI data");
+  return res.json() as Promise<CountryKPI[]>;
 }
 
 export async function getTopMovers(countryCode: string): Promise<CountryTopMovers> {
-  return get<CountryTopMovers>(`/market/${countryCode}/top-movers`);
+  const res = await fetch("/data/top_movers.json");
+  if (!res.ok) throw new Error("Failed to load top movers data");
+  const all = await res.json() as Record<string, CountryTopMovers>;
+  const entry = all[countryCode];
+  if (!entry) throw new Error(`No top-movers data for ${countryCode}`);
+  return entry;
 }

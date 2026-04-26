@@ -10,7 +10,7 @@ export const SiteHeader = () => {
           </div>
           <div className="leading-tight">
             <div className="font-serif text-xl font-semibold tracking-tight">
-              CareerConnect
+              CandidateConnect
             </div>
             <div className="eyebrow -mt-0.5">
               Match Careers to the Right People

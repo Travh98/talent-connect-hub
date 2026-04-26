@@ -490,7 +490,7 @@ export const EmployeesPanel = ({
 
         <section>
           <p className="eyebrow mb-2">Step 05 · Anything else?</p>
-          <h2 className="font-serif text-3xl font-semibold mb-5">Free text</h2>
+          <h2 className="font-serif text-3xl font-semibold mb-5">Notes about You</h2>
           <div className="space-y-6">
             <div>
               <Label htmlFor="freeSkills" className="text-sm">
