@@ -18,19 +18,42 @@ You need an OpenAI API key. The `data/` folder must contain `dashboard_simple_is
 
 **Terminal 1 — backend**
 
+#### Bash
 ```bash
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-
 cp .env.example .env
 # Set OPENAI_API_KEY in .env
+
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+uvicorn skills_passport.main:app --reload
+```
+
+#### Powershell
+```bash
+cp .env.example .env
+# Set OPENAI_API_KEY in .env
+
+cd backend
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
 
 uvicorn skills_passport.main:app --reload
 ```
 
 **Terminal 2 — frontend**
 
+#### Bash
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+#### Powershell
 ```bash
 cd frontend
 npm install
