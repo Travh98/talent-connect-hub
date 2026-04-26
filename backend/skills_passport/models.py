@@ -203,6 +203,43 @@ class MarketResponse(BaseModel):
     sector_employment: list[MarketSectorRow]
 
 
+class CountryKPI(BaseModel):
+    country_iso3: str
+    country_label: str
+    total_workers_k: float
+    workers_delta_pct: float
+    workers_year_first: int
+    workers_year_last: int
+    avg_earnings: float
+    earnings_currency: str
+    earnings_delta_pct: float
+    earnings_year_first: int
+    earnings_year_last: int
+    avg_green_share_pct: float
+
+
+class TopMoverEntry(BaseModel):
+    rank: int
+    isco_1_code: str
+    isco_1_label: str
+    pct_change: float
+    year_first: int
+    year_last: int
+    workers_thousands: Optional[float] = None
+
+
+class TopEarnerEntry(TopMoverEntry):
+    earnings_value_last: float
+    earnings_currency: str
+
+
+class CountryTopMovers(BaseModel):
+    country_iso3: str
+    country_label: str
+    top_employment_growth_majors: list[TopMoverEntry]
+    top_earnings_growth_majors: list[TopEarnerEntry]
+
+
 def _jsonld_type_for(skill_type: str) -> str:
     if skill_type == consts.SKILL_TYPE_OCCUPATION:
         return consts.JSONLD_TYPE_OCCUPATION

@@ -1,12 +1,8 @@
-# UNMAPPED — Skills Passport Protocol (Module 01)
+# UNMAPPED — Skills Passport Protocol (Modules 01 + 03)
 
-Converts informal experience and structured profile inputs into a portable
-**JSON-LD skills passport** grounded in the [ESCO taxonomy](https://esco.ec.europa.eu)
-and ISCO-08 occupation codes.
-
-This is the protocol layer. It has no UI. Downstream systems (matching engines,
-dashboards, employer portals) consume the passport JSON-LD without writing
-custom parsers.
+Converts informal experience into a portable **JSON-LD skills passport** grounded
+in the [ESCO taxonomy](https://esco.ec.europa.eu) and ISCO-08 occupation codes,
+then matches it against a pre-built ILOSTAT labour market dataset.
 
 ---
 
@@ -18,11 +14,16 @@ P1 Capture    ProfileInput (free text + optional structured fields)
 P2 Infer      OpenAI structured-JSON call → NormalizationResult
      ↓
 P3 Mint       ESCO API lookup per skill → SkillsPassport (JSON-LD)
+     ↓
+P4 Match      OpenAI embedding → cosine search over 426 ISCO-4 occupations
+     ↓
+P5 Annotate   Join with ILOSTAT employment + earnings signals (dashboard CSV)
+     ↓
+P6 Swap       Re-run P4+P5 with a different country code, same passport
 ```
 
 Unresolved skills (no ESCO match) are retained on the passport with
-`passport:isResolved: false` and a low confidence score so no user data
-is silently dropped.
+`passport:isResolved: false` so no user data is silently dropped.
 
 ---
 
@@ -30,14 +31,36 @@ is silently dropped.
 
 ```bash
 cd backend
-python -m venv .venv && source .venv/bin/activate
+
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-export OPENAI_API_KEY=sk-...
+cp .env.example .env
+# Edit .env — set OPENAI_API_KEY
+```
+
+The `dashboard_simple_isco4.csv` file is expected at `../data/dashboard_simple_isco4.csv`
+relative to the backend directory (i.e. `talent-connect-hub/data/`). Override with
+`DASHBOARD_CSV_PATH=/absolute/path/to/file.csv` in `.env` if needed.
+
+```bash
 uvicorn skills_passport.main:app --reload
 ```
 
-API is available at `http://localhost:8000`. Interactive docs at `/docs`.
+API at `http://localhost:8000`. Docs at `/docs`.
+
+**First call to `POST /match`** takes ~5 s to build and cache the embedding index
+(`backend/cache/embeddings_text-embedding-3-small.npy`). Every subsequent call is instant.
+Delete the cache file to force a rebuild.
+
+---
+
+## Environment
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `OPENAI_API_KEY` | Yes | — | Used for P2 (extraction) and P4 (embedding) |
+| `DASHBOARD_CSV_PATH` | No | `../data/dashboard_simple_isco4.csv` | Path to pre-built ILOSTAT CSV |
 
 ---
 
@@ -45,62 +68,102 @@ API is available at `http://localhost:8000`. Interactive docs at `/docs`.
 
 ### `POST /passport/generate`
 
-Generate a skills passport from a profile.
+Run the full P1→P3 pipeline. Returns a JSON-LD `SkillsPassport`.
 
-**Request body**
+**Request**
 
-| Field              | Type          | Required | Description                                  |
-|--------------------|---------------|----------|----------------------------------------------|
-| `raw_text`         | string        | Yes      | Free-text profile description                |
-| `country_code`     | string        | Yes      | ISO-3 country code (`GHA`, `KEN`)            |
-| `locale`           | string        | No       | BCP-47 locale tag, default `en`              |
-| `education_level`  | string        | No       | Highest credential attained                  |
-| `languages`        | string[]      | No       | Languages spoken                             |
-| `years_experience` | number        | No       | Total years of work experience               |
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `raw_text` | string | Yes | Free-text profile description |
+| `country_code` | string | Yes | ISO-3 code: `GHA`, `IND`, or `BGD` |
+| `locale` | string | No | BCP-47 locale, default `en` |
+| `education_level` | string | No | Highest credential attained |
+| `languages` | string[] | No | Languages spoken |
+| `years_experience` | number | No | Total years of work experience |
 
-**Example request**
+**Example**
+
+```bash
+curl -X POST http://localhost:8000/passport/generate \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "raw_text": "I have been repairing phones in Accra for 3 years and speak English and Twi",
+    "country_code": "GHA",
+    "locale": "en"
+  }'
+```
+
+---
+
+### `POST /match`
+
+P4+P5: embed passport skill claims, search the occupation index, annotate with
+ILOSTAT employment growth and earnings signals.
+
+**Request**
 
 ```json
 {
-  "raw_text": "I've been fixing phones since I was 17. I also teach basic coding.",
+  "passport": { /* full JSON-LD passport from /passport/generate */ },
   "country_code": "GHA",
-  "locale": "en",
-  "education_level": "secondary school",
-  "languages": ["English", "Twi"],
-  "years_experience": 5
+  "top_n": 5
 }
 ```
 
-**Example response** (JSON-LD)
+**Response**
 
 ```json
 {
-  "@context": {
-    "esco": "http://data.europa.eu/esco/",
-    "schema": "https://schema.org/",
-    "passport": "https://unmapped.io/passport/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
-  },
-  "@type": "passport:SkillsPassport",
-  "@id": "urn:unmapped:passport:3fa85f64-...",
-  "passport:schemaVersion": "1.0.0",
-  "passport:issuedAt": "2026-04-25T22:00:00+00:00",
-  "passport:country": "GHA",
-  "passport:locale": "en",
-  "passport:skillClaims": [
+  "country_code": "GHA",
+  "matches": [
     {
-      "@type": "esco:Skill",
-      "@id": "http://data.europa.eu/esco/skill/abc123",
-      "passport:localLabel": "fixing phones since I was 17",
-      "skos:prefLabel": "mobile phone repair technician",
-      "passport:confidence": 0.92,
-      "passport:isResolved": true,
-      "passport:skillType": "occupation",
-      "esco:iscoCode": "7421"
+      "rank": 1,
+      "isco_4_code": "7422",
+      "isco_4_label": "Electronics mechanics and servicers",
+      "fit_score": 87,
+      "avg_green_share": 0.12,
+      "avg_share_digital": 0.31,
+      "skill_gaps": ["soldering", "circuit testing", "fault diagnosis"],
+      "signals": {
+        "employment_growth": {
+          "value": 8.4,
+          "year_first": 2013,
+          "year_last": 2017,
+          "employment_last_thousands": 142.3,
+          "source": "ILOSTAT via dashboard_simple_isco4"
+        },
+        "earnings_level": {
+          "value": 312.0,
+          "pct_change": 14.2,
+          "year_last": 2017,
+          "source": "ILOSTAT via dashboard_simple_isco4"
+        }
+      }
     }
   ]
 }
 ```
+
+`signals` fields are `null` when ILOSTAT coverage is missing for a country × ISCO-4 combination.
+
+Returns `400` when the passport contains no resolved skill claims.
+
+---
+
+### `GET /market/{country_code}`
+
+Aggregate ILOSTAT employment and earnings data by ISCO-2 sector for a country.
+Anchor-filtered to avoid double-counting.
+
+```bash
+curl http://localhost:8000/market/GHA
+curl http://localhost:8000/market/IND
+curl http://localhost:8000/market/BGD
+```
+
+Returns `404` for unknown country codes.
+
+---
 
 ### `GET /passport/health`
 
@@ -110,9 +173,9 @@ Returns `{"status": "ok"}`.
 
 ## Country Packs
 
-Built-in packs ship for **Ghana** (`GHA`) and **Kenya** (`KEN`).
+Built-in packs: **Ghana** (`GHA`), **India** (`IND`), **Bangladesh** (`BGD`).
 
-To add a new context without changing code, write a JSON file and point to it:
+To add a new context without changing code, write a JSON file and load it:
 
 ```json
 {
@@ -124,34 +187,24 @@ To add a new context without changing code, write a JSON file and point to it:
 }
 ```
 
-Load it at startup via `load_pack_from_file("packs/nga.json")`.
+```python
+from skills_passport.country_pack import load_pack_from_file
+pack = load_pack_from_file("packs/nga.json")
+```
 
-**Configurable per deployment (no code changes):**
-
-| Concern                     | Mechanism                              |
-|-----------------------------|----------------------------------------|
-| ESCO query language         | `esco_language` in country pack        |
-| UI locale / text direction  | `locale` in country pack               |
-| ILOSTAT data scope          | `ilostat_country_code` in country pack |
-| Number of ESCO results      | `ESCO_SEARCH_RESULTS_LIMIT` in consts  |
+Note: signal data from `POST /match` and `GET /market` is sourced from the CSV.
+A country pack alone is not enough to get signals — the CSV must contain rows for that `country_iso3`.
 
 ---
 
 ## Tests
 
 ```bash
-pytest tests/ -v
+# From backend/
+.venv/bin/pytest tests/ -v
 ```
 
-All tests are unit tests with mocked OpenAI and ESCO calls — no network
-or API key required.
-
----
-
-## Constants
-
-All numeric and boolean configuration lives in `skills_passport/consts.py`.
-No raw numbers appear elsewhere in the package.
+All tests are unit tests — mocked OpenAI, ESCO, and file I/O. No network or API key required.
 
 ---
 
@@ -160,24 +213,34 @@ No raw numbers appear elsewhere in the package.
 ```
 backend/
   skills_passport/
-    consts.py           # all numeric/boolean constants
-    models.py           # Pydantic models + JSON-LD serialization
-    country_pack.py     # country pack registry and loader
-    esco_client.py      # ESCO /search wrapper
-    normalizer.py       # OpenAI structured-JSON extraction (P2)
-    passport_builder.py # assembles passport from extractions (P3)
-    router.py           # FastAPI routes
-    main.py             # app entry point
+    consts.py             # all numeric/boolean constants + file paths
+    models.py             # Pydantic models + JSON-LD serialization
+    country_pack.py       # country pack registry (GHA, IND, BGD)
+    esco_client.py        # ESCO /search wrapper (P3)
+    normalizer.py         # OpenAI structured-JSON extraction (P2)
+    passport_builder.py   # assembles passport from extractions (P3)
+    dashboard_loader.py   # loads dashboard CSV into memory (P5)
+    embedder.py           # OpenAI text-embedding-3-small batch wrapper (P4)
+    indexer.py            # lazy-built cosine similarity index + disk cache (P4)
+    matcher.py            # P4+P5: embed → search → annotate with signals
+    router.py             # FastAPI routes
+    main.py               # app entry point + CORS
   tests/
     conftest.py
     test_country_pack.py
+    test_dashboard_loader.py
+    test_embedder.py
     test_esco_client.py
+    test_indexer.py
+    test_matcher.py
     test_normalizer.py
     test_passport_builder.py
     test_router.py
-  docs/
-    architecture.md
-    postman_collection.json
+  cache/                  # auto-created; holds embedding .npy file
+  .env.example
   requirements.txt
   README.md
+
+data/
+  dashboard_simple_isco4.csv   # 1,704 rows · GHA/IND/BGD · ISCO-4 grain
 ```

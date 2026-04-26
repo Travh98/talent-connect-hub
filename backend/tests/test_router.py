@@ -145,3 +145,64 @@ def test_generate_calls_build_once(mock_extract, mock_build, client):
     client.post("/passport/generate", json=VALID_PAYLOAD)
 
     assert mock_build.call_count == 1
+
+
+# ── /market/kpi-summary ─────────────────────────────────────────────────────
+
+_KPI_ROW = {
+    "country_iso3": "GHA", "country_label": "Ghana",
+    "total_workers_k": 9448.0, "workers_delta_pct": -18.4,
+    "workers_year_first": 2013, "workers_year_last": 2017,
+    "avg_earnings": 2491.0, "earnings_currency": "GHS",
+    "earnings_delta_pct": 458.5, "earnings_year_first": 2013, "earnings_year_last": 2024,
+    "avg_green_share_pct": 4.5,
+}
+
+
+@patch("skills_passport.router.get_kpi_summary", return_value=[_KPI_ROW])
+def test_kpi_summary_returns_list(mock_kpi, client):
+    response = client.get("/market/kpi-summary")
+    assert response.status_code == 200
+    body = response.json()
+    assert isinstance(body, list)
+    assert body[0]["country_iso3"] == "GHA"
+
+
+@patch("skills_passport.router.get_kpi_summary", return_value=[_KPI_ROW])
+def test_kpi_summary_shape(mock_kpi, client):
+    body = client.get("/market/kpi-summary").json()
+    assert "total_workers_k" in body[0]
+    assert "avg_earnings" in body[0]
+
+
+# ── /market/{country_code}/top-movers ───────────────────────────────────────
+
+_TOP_MOVERS_DATA = {
+    "country_iso3": "GHA",
+    "country_label": "Ghana",
+    "top_employment_growth_majors": [
+        {"rank": 1, "isco_1_code": "7", "isco_1_label": "Craft workers",
+         "pct_change": 37.7, "year_first": 2013, "year_last": 2017, "workers_thousands": 500},
+    ],
+    "top_earnings_growth_majors": [
+        {"rank": 1, "isco_1_code": "5", "isco_1_label": "Service workers",
+         "pct_change": 356.8, "year_first": 2013, "year_last": 2024,
+         "workers_thousands": None, "earnings_value_last": 2032.0, "earnings_currency": "GHS"},
+    ],
+}
+
+
+@patch("skills_passport.router.get_top_movers", return_value=_TOP_MOVERS_DATA)
+def test_top_movers_returns_shape(mock_movers, client):
+    response = client.get("/market/GHA/top-movers")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["country_iso3"] == "GHA"
+    assert len(body["top_employment_growth_majors"]) == 1
+    assert len(body["top_earnings_growth_majors"]) == 1
+
+
+@patch("skills_passport.router.get_top_movers", return_value=None)
+def test_top_movers_unknown_country_returns_404(mock_movers, client):
+    response = client.get("/market/ZZZ/top-movers")
+    assert response.status_code == consts.HTTP_STATUS_NOT_FOUND

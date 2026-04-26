@@ -66,6 +66,8 @@ _REPO_DIR = _BACKEND_DIR.parent
 
 EMBED_CACHE_PATH: Path = _BACKEND_DIR / "cache" / f"embeddings_{EMBED_MODEL}.npy"
 DASHBOARD_CSV_PATH_DEFAULT: Path = _REPO_DIR / "data" / "dashboard_simple_isco4.csv"
+KPI_SUMMARY_JSON_PATH_DEFAULT: Path = _REPO_DIR / "data" / "kpi_summary.json"
+TOP_MOVERS_JSON_PATH_DEFAULT: Path = _REPO_DIR / "data" / "top_movers.json"
 
 # Matching
 MATCH_TOP_N_DEFAULT: int = 5

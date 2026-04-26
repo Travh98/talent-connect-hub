@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Masthead } from "@/components/Masthead";
@@ -6,6 +7,8 @@ import { EmployersPanel } from "@/components/EmployersPanel";
 import { MarketAnalysisPanel } from "@/components/MarketAnalysisPanel";
 
 const Index = () => {
+  const [countryCode, setCountryCode] = useState("GHA");
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -20,35 +23,35 @@ const Index = () => {
                 <h2 className="font-serif text-3xl font-semibold">Three readers, one ledger</h2>
               </div>
               <TabsList className="bg-transparent p-0 h-auto gap-0 border border-foreground/30 rounded-none">
-                <TabsTrigger
-                  value="employees"
-                  className="rounded-none px-5 py-2.5 text-sm font-mono uppercase tracking-wider data-[state=active]:bg-foreground data-[state=active]:text-background"
-                >
-                  Employees
-                </TabsTrigger>
-                <TabsTrigger
-                  value="employers"
-                  className="rounded-none px-5 py-2.5 text-sm font-mono uppercase tracking-wider data-[state=active]:bg-foreground data-[state=active]:text-background border-l border-foreground/30"
-                >
-                  Employers
-                </TabsTrigger>
-                <TabsTrigger
-                  value="market"
-                  className="rounded-none px-5 py-2.5 text-sm font-mono uppercase tracking-wider data-[state=active]:bg-foreground data-[state=active]:text-background border-l border-foreground/30"
-                >
-                  Market Analysis
-                </TabsTrigger>
-              </TabsList>
+                  <TabsTrigger
+                    value="employees"
+                    className="rounded-none px-5 py-2.5 text-sm font-mono uppercase tracking-wider data-[state=active]:bg-foreground data-[state=active]:text-background"
+                  >
+                    Employees
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="employers"
+                    className="rounded-none px-5 py-2.5 text-sm font-mono uppercase tracking-wider data-[state=active]:bg-foreground data-[state=active]:text-background border-l border-foreground/30"
+                  >
+                    Employers
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="market"
+                    className="rounded-none px-5 py-2.5 text-sm font-mono uppercase tracking-wider data-[state=active]:bg-foreground data-[state=active]:text-background border-l border-foreground/30"
+                  >
+                    Market Analysis
+                  </TabsTrigger>
+                </TabsList>
             </div>
 
             <TabsContent value="employees" className="mt-0 focus-visible:outline-none">
-              <EmployeesPanel />
+              <EmployeesPanel countryCode={countryCode} setCountryCode={setCountryCode} />
             </TabsContent>
             <TabsContent value="employers" className="mt-0 focus-visible:outline-none">
               <EmployersPanel />
             </TabsContent>
             <TabsContent value="market" className="mt-0 focus-visible:outline-none">
-              <MarketAnalysisPanel />
+              <MarketAnalysisPanel countryCode={countryCode} setCountryCode={setCountryCode} />
             </TabsContent>
           </Tabs>
         </section>

@@ -45,3 +45,7 @@ build/
 *.cover
 .coverage
 htmlcov/
+
+# Embedding cache
+*.npy
+backend/cache/

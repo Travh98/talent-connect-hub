@@ -18,12 +18,17 @@ from openai import OpenAI
 from . import consts
 from .country_pack import load_pack
 from .dashboard_loader import get_anchor_rows, get_known_countries
+from .kpi_loader import get_kpi_summary, get_top_movers
 from .matcher import match
 from .models import (
+    CountryKPI,
+    CountryTopMovers,
     MarketResponse,
     MarketSectorRow,
     MatchRequest,
     ProfileInput,
+    TopEarnerEntry,
+    TopMoverEntry,
 )
 from .normalizer import extract_skills
 from .passport_builder import build_passport
@@ -77,6 +82,12 @@ def run_match(
             status_code=consts.HTTP_STATUS_BAD_REQUEST, detail=str(exc)
         ) from exc
     return {"country_code": request.country_code, "matches": [r.model_dump() for r in results]}
+
+
+@match_router.get("/market/kpi-summary")
+def get_kpi_summary_route() -> list[CountryKPI]:
+    """Per-country KPI summary (workforce size, earnings, green share)."""
+    return [CountryKPI(**row) for row in get_kpi_summary()]
 
 
 @match_router.get("/market/{country_code}")
@@ -138,6 +149,27 @@ def get_market(country_code: str) -> MarketResponse:
         earnings_year_last=earn_year_last,
         total_employment_thousands=round(total_employment, 1),
         sector_employment=sectors,
+    )
+
+
+@match_router.get("/market/{country_code}/top-movers")
+def get_top_movers_route(country_code: str) -> CountryTopMovers:
+    """Top-5 ISCO-1 employment-growth and earnings-growth movers for a country."""
+    data = get_top_movers(country_code.upper())
+    if data is None:
+        raise HTTPException(
+            status_code=consts.HTTP_STATUS_NOT_FOUND,
+            detail=f"No top-movers data for country '{country_code}'",
+        )
+    return CountryTopMovers(
+        country_iso3=data["country_iso3"],
+        country_label=data["country_label"],
+        top_employment_growth_majors=[
+            TopMoverEntry(**e) for e in data["top_employment_growth_majors"]
+        ],
+        top_earnings_growth_majors=[
+            TopEarnerEntry(**e) for e in data["top_earnings_growth_majors"]
+        ],
     )
 
 

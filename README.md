@@ -90,11 +90,7 @@ Countries covered: **Ghana** (2013–2017), **India** (2010–2024), **Banglades
 | `OPENAI_API_KEY` | Yes | Used for skill extraction and embedding |
 | `DASHBOARD_CSV_PATH` | No | Override default path to the ILOSTAT CSV |
 
-**Frontend** (`frontend/.env`):
-
-| Variable | Default | Description |
-|---|---|---|
-| `VITE_API_BASE_URL` | `http://localhost:8000` | Backend base URL |
+**Frontend:** defaults to `http://localhost:8000`. Override by setting `VITE_API_BASE_URL` in a `frontend/.env` file.
 
 ---
 
@@ -129,7 +125,6 @@ talent-connect-hub/
         EmployersPanel.tsx  # mocked
       pages/
         Index.tsx           # shared country selector
-    .env.example
   data/
     dashboard_simple_isco4.csv
 ```
