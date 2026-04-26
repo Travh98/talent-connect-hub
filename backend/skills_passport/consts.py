@@ -50,4 +50,23 @@ SKILL_TYPES_VALID: tuple[str, ...] = (
 
 # HTTP status semantics used at the API boundary
 HTTP_STATUS_BAD_REQUEST: int = 400
+HTTP_STATUS_NOT_FOUND: int = 404
 HTTP_STATUS_INTERNAL_ERROR: int = 500
+
+# Embedding
+from pathlib import Path  # noqa: E402 — intentional late import to keep top clean
+
+EMBED_MODEL: str = "text-embedding-3-small"
+EMBED_DIMS: int = 1536
+EMBED_BATCH_SIZE: int = 100
+
+_PACKAGE_DIR = Path(__file__).parent
+_BACKEND_DIR = _PACKAGE_DIR.parent
+_REPO_DIR = _BACKEND_DIR.parent
+
+EMBED_CACHE_PATH: Path = _BACKEND_DIR / "cache" / f"embeddings_{EMBED_MODEL}.npy"
+DASHBOARD_CSV_PATH_DEFAULT: Path = _REPO_DIR / "data" / "dashboard_simple_isco4.csv"
+
+# Matching
+MATCH_TOP_N_DEFAULT: int = 5
+MATCH_SKILL_GAPS_LIMIT: int = 3

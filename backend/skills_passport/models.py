@@ -148,6 +148,61 @@ def _skill_claim_to_jsonld(claim: SkillClaim) -> dict:
     return node
 
 
+class EmploymentSignal(BaseModel):
+    value: float                       # employment_pct_change * 100
+    year_first: int
+    year_last: int
+    employment_last_thousands: float
+    source: str
+
+
+class EarningsSignal(BaseModel):
+    value: float                       # earnings_value_last
+    pct_change: float                  # earnings_pct_change * 100
+    year_last: int
+    source: str
+
+
+class SignalBlock(BaseModel):
+    employment_growth: Optional[EmploymentSignal] = None
+    earnings_level: Optional[EarningsSignal] = None
+
+
+class MatchResult(BaseModel):
+    rank: int
+    isco_4_code: str
+    isco_4_label: str
+    fit_score: int
+    avg_green_share: float
+    avg_share_digital: float
+    skill_gaps: list[str]
+    signals: SignalBlock
+
+
+class MatchRequest(BaseModel):
+    passport: dict
+    country_code: str
+    top_n: int = 5
+
+
+class MarketSectorRow(BaseModel):
+    isco_2_code: str
+    isco_2_label: str
+    employment_thousands_last: float
+    employment_pct_change: float
+    earnings_value_last: Optional[float] = None
+    avg_green_share: float
+
+
+class MarketResponse(BaseModel):
+    country_code: str
+    country_name: str
+    employment_year_last: int
+    earnings_year_last: int
+    total_employment_thousands: float
+    sector_employment: list[MarketSectorRow]
+
+
 def _jsonld_type_for(skill_type: str) -> str:
     if skill_type == consts.SKILL_TYPE_OCCUPATION:
         return consts.JSONLD_TYPE_OCCUPATION

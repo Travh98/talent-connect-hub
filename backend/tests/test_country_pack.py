@@ -19,14 +19,19 @@ def test_load_pack_ghana():
     assert pack.esco_language == "en"
 
 
-def test_load_pack_kenya():
-    pack = load_pack("KEN")
-    assert pack.country_code == "KEN"
+def test_load_pack_india():
+    pack = load_pack("IND")
+    assert pack.country_code == "IND"
+
+
+def test_load_pack_bangladesh():
+    pack = load_pack("BGD")
+    assert pack.country_code == "BGD"
 
 
 def test_load_pack_case_insensitive():
     assert load_pack("gha").country_code == "GHA"
-    assert load_pack("Gha").country_code == "GHA"
+    assert load_pack("ind").country_code == "IND"
 
 
 def test_load_pack_unknown_raises():
@@ -54,6 +59,10 @@ def test_load_pack_from_file():
         assert pack.country_name == "Nigeria"
     finally:
         tmp_path.unlink()
+
+
+def test_builtin_packs_contains_expected_countries():
+    assert set(BUILTIN_PACKS.keys()) == {"GHA", "IND", "BGD"}
 
 
 def test_builtin_packs_all_have_ilostat_code():

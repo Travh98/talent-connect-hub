@@ -22,17 +22,26 @@ GHANA_PACK = CountryPack(
     ilostat_country_code="GHA",
 )
 
-KENYA_PACK = CountryPack(
-    country_code="KEN",
-    country_name="Kenya",
+INDIA_PACK = CountryPack(
+    country_code="IND",
+    country_name="India",
     esco_language="en",
     locale="en",
-    ilostat_country_code="KEN",
+    ilostat_country_code="IND",
+)
+
+BANGLADESH_PACK = CountryPack(
+    country_code="BGD",
+    country_name="Bangladesh",
+    esco_language="en",
+    locale="en",
+    ilostat_country_code="BGD",
 )
 
 BUILTIN_PACKS: dict[str, CountryPack] = {
     GHANA_PACK.country_code: GHANA_PACK,
-    KENYA_PACK.country_code: KENYA_PACK,
+    INDIA_PACK.country_code: INDIA_PACK,
+    BANGLADESH_PACK.country_code: BANGLADESH_PACK,
 }
 
 
