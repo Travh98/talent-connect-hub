@@ -1,0 +1,58 @@
+[
+  {
+    "country_iso3": "BGD",
+    "country_label": "Bangladesh",
+    "total_workers_k": 67834,
+    "workers_delta_pct": 12,
+    "workers_year_first": 2017,
+    "workers_year_last": 2024,
+    "avg_earnings": 14582,
+    "earnings_currency": "BDT",
+    "earnings_delta_pct": 35.1,
+    "earnings_year_first": 2013,
+    "earnings_year_last": 2024,
+    "avg_green_share_pct": 4.5
+  },
+  {
+    "country_iso3": "GHA",
+    "country_label": "Ghana",
+    "total_workers_k": 9448,
+    "workers_delta_pct": -18.4,
+    "workers_year_first": 2013,
+    "workers_year_last": 2017,
+    "avg_earnings": 2491,
+    "earnings_currency": "GHS",
+    "earnings_delta_pct": 458.5,
+    "earnings_year_first": 2013,
+    "earnings_year_last": 2024,
+    "avg_green_share_pct": 4.5
+  },
+  {
+    "country_iso3": "IND",
+    "country_label": "India",
+    "total_workers_k": 468374,
+    "workers_delta_pct": 22.8,
+    "workers_year_first": 2018,
+    "workers_year_last": 2024,
+    "avg_earnings": 15927,
+    "earnings_currency": "INR",
+    "earnings_delta_pct": -3.8,
+    "earnings_year_first": 2022,
+    "earnings_year_last": 2024,
+    "avg_green_share_pct": 4.5
+  },
+  {
+    "country_iso3": "KEN",
+    "country_label": "Kenya",
+    "total_workers_k": 14456,
+    "workers_delta_pct": -31.6,
+    "workers_year_first": 2019,
+    "workers_year_last": 2022,
+    "avg_earnings": 11676,
+    "earnings_currency": "KES",
+    "earnings_delta_pct": -20.5,
+    "earnings_year_first": 2019,
+    "earnings_year_last": 2019,
+    "avg_green_share_pct": 4.5
+  }
+]

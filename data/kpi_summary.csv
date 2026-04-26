@@ -1,0 +1,5 @@
+country_iso3,country_label,total_workers_k,workers_delta_pct,workers_year_first,workers_year_last,avg_earnings,earnings_currency,earnings_delta_pct,earnings_year_first,earnings_year_last,avg_green_share_pct
+BGD,Bangladesh,67834,12,2017,2024,14582,BDT,35.1,2013,2024,4.5
+GHA,Ghana,9448,-18.4,2013,2017,2491,GHS,458.5,2013,2024,4.5
+IND,India,468374,22.8,2018,2024,15927,INR,-3.8,2022,2024,4.5
+KEN,Kenya,14456,-31.6,2019,2022,11676,KES,-20.5,2019,2019,4.5
