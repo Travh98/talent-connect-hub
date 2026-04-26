@@ -9,13 +9,21 @@ export const SiteHeader = () => {
             <Compass className="h-4 w-4" strokeWidth={2.25} />
           </div>
           <div className="leading-tight">
-            <div className="font-serif text-xl font-semibold tracking-tight">CandidateConnect</div>
-            <div className="eyebrow -mt-0.5">Labour Market Observatory</div>
+            <div className="font-serif text-xl font-semibold tracking-tight">
+              CareerConnect
+            </div>
+            <div className="eyebrow -mt-0.5">
+              Match Careers to the Right People
+            </div>
           </div>
         </a>
         <nav className="hidden md:flex items-center gap-8 text-sm">
-          <a href="#dashboard" className="hover:text-accent transition-colors">Dashboard</a>
-          <a href="#about" className="hover:text-accent transition-colors">About</a>
+          <a href="#dashboard" className="hover:text-accent transition-colors">
+            Dashboard
+          </a>
+          <a href="#about" className="hover:text-accent transition-colors">
+            About
+          </a>
           <span className="font-mono text-xs text-muted-foreground border-l border-foreground/20 pl-6">
             Vol. III · No. 2
           </span>

@@ -29,6 +29,7 @@ type Posting = {
   location: string;
   skills: string[];
   matches: number;
+  pinnedCandidate?: Candidate;
 };
 
 type Candidate = {
@@ -40,6 +41,21 @@ type Candidate = {
 };
 
 const SEED: Posting[] = [
+  {
+    id: 4,
+    title: "Fisheries Observer",
+    isco: "3152",
+    location: "Elmina, GH",
+    skills: ["Species ID", "Data collection", "Maritime safety", "Log reporting"],
+    matches: 31,
+    pinnedCandidate: {
+      id: "cand_4_pinned",
+      name: "Kwame Asante",
+      location: "Elmina, GH",
+      topSkills: ["Species ID", "Data collection", "Maritime safety", "Log reporting"],
+      match: 97,
+    },
+  },
   { id: 1, title: "Senior Data Analyst", isco: "2511", location: "Nairobi, KE", skills: ["SQL", "Python", "Tableau"], matches: 142 },
   { id: 2, title: "Civil Engineer (water)", isco: "2142", location: "Dakar, SN", skills: ["AutoCAD", "Hydrology", "Field"], matches: 47 },
   { id: 3, title: "Primary School Teacher", isco: "2341", location: "Kigali, RW", skills: ["Pedagogy", "English"], matches: 318 },
@@ -79,7 +95,11 @@ const generateCandidates = (posting: Posting): Candidate[] => {
       match: Math.max(42, match),
     });
   }
-  return list.sort((a, b) => b.match - a.match);
+  const sorted = list.sort((a, b) => b.match - a.match);
+  if (posting.pinnedCandidate) {
+    return [posting.pinnedCandidate, ...sorted.filter((c) => c.id !== posting.pinnedCandidate!.id)];
+  }
+  return sorted;
 };
 
 export const EmployersPanel = () => {

@@ -1,9 +1,98 @@
 import { useState } from "react";
-import { TrendingUp, TrendingDown, AlertTriangle, ArrowRight, ChevronDown } from "lucide-react";
+import { TrendingUp, TrendingDown, ChevronDown } from "lucide-react";
 import {
   BarChart, Bar, Cell,
   XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, ReferenceLine,
 } from "recharts";
+
+// Source: /data/top_movers.json
+type TopMover = { rank: number; isco_1_label: string; pct_change: number; year_first: number; year_last: number };
+type TopEarner = TopMover & { earnings_value_last: number; earnings_currency: string };
+const TOP_MOVERS: Record<string, { top_employment_growth_majors: TopMover[]; top_earnings_growth_majors: TopEarner[] }> = {
+  BGD: {
+    top_employment_growth_majors: [
+      { rank: 1, isco_1_label: "Technicians and associate professionals", pct_change: 59.4, year_first: 2017, year_last: 2024 },
+      { rank: 2, isco_1_label: "Plant and machine operators, and assemblers", pct_change: 44.6, year_first: 2017, year_last: 2024 },
+      { rank: 3, isco_1_label: "Skilled agric., forestry and fishery workers", pct_change: 43.4, year_first: 2017, year_last: 2024 },
+      { rank: 4, isco_1_label: "Professionals", pct_change: 5.3, year_first: 2017, year_last: 2024 },
+      { rank: 5, isco_1_label: "Service and sales workers", pct_change: 1, year_first: 2017, year_last: 2024 },
+    ],
+    top_earnings_growth_majors: [
+      { rank: 1, isco_1_label: "Armed forces occupations", pct_change: 91.1, year_first: 2013, year_last: 2024, earnings_value_last: 28908, earnings_currency: "BDT" },
+      { rank: 2, isco_1_label: "Managers", pct_change: 89.7, year_first: 2013, year_last: 2024, earnings_value_last: 37690, earnings_currency: "BDT" },
+      { rank: 3, isco_1_label: "Clerical support workers", pct_change: 68, year_first: 2013, year_last: 2024, earnings_value_last: 22678, earnings_currency: "BDT" },
+      { rank: 4, isco_1_label: "Technicians and associate professionals", pct_change: 46, year_first: 2013, year_last: 2024, earnings_value_last: 22517, earnings_currency: "BDT" },
+      { rank: 5, isco_1_label: "Professionals", pct_change: 41.9, year_first: 2013, year_last: 2024, earnings_value_last: 23053, earnings_currency: "BDT" },
+    ],
+  },
+  GHA: {
+    top_employment_growth_majors: [
+      { rank: 1, isco_1_label: "Craft and related trades workers", pct_change: 37.7, year_first: 2013, year_last: 2017 },
+      { rank: 2, isco_1_label: "Managers", pct_change: 19.7, year_first: 2013, year_last: 2017 },
+      { rank: 3, isco_1_label: "Plant and machine operators, and assemblers", pct_change: 19.2, year_first: 2013, year_last: 2017 },
+      { rank: 4, isco_1_label: "Clerical support workers", pct_change: 18.6, year_first: 2013, year_last: 2017 },
+      { rank: 5, isco_1_label: "Professionals", pct_change: 18.5, year_first: 2013, year_last: 2017 },
+    ],
+    top_earnings_growth_majors: [
+      { rank: 1, isco_1_label: "Service and sales workers", pct_change: 356.8, year_first: 2013, year_last: 2024, earnings_value_last: 2032, earnings_currency: "GHS" },
+      { rank: 2, isco_1_label: "Technicians and associate professionals", pct_change: 319.5, year_first: 2013, year_last: 2024, earnings_value_last: 2756, earnings_currency: "GHS" },
+      { rank: 3, isco_1_label: "Plant and machine operators, and assemblers", pct_change: 302.3, year_first: 2013, year_last: 2024, earnings_value_last: 2595, earnings_currency: "GHS" },
+      { rank: 4, isco_1_label: "Managers", pct_change: 225, year_first: 2013, year_last: 2024, earnings_value_last: 3929, earnings_currency: "GHS" },
+      { rank: 5, isco_1_label: "Clerical support workers", pct_change: 215.1, year_first: 2013, year_last: 2024, earnings_value_last: 2213, earnings_currency: "GHS" },
+    ],
+  },
+  IND: {
+    top_employment_growth_majors: [
+      { rank: 1, isco_1_label: "Service and sales workers", pct_change: 57.5, year_first: 2018, year_last: 2024 },
+      { rank: 2, isco_1_label: "Skilled agric., forestry and fishery workers", pct_change: 50.9, year_first: 2018, year_last: 2024 },
+      { rank: 3, isco_1_label: "Plant and machine operators, and assemblers", pct_change: 39, year_first: 2018, year_last: 2024 },
+      { rank: 4, isco_1_label: "Professionals", pct_change: 30.1, year_first: 2018, year_last: 2024 },
+      { rank: 5, isco_1_label: "Elementary occupations", pct_change: 20.6, year_first: 2018, year_last: 2024 },
+    ],
+    top_earnings_growth_majors: [
+      { rank: 1, isco_1_label: "Craft and related trades workers", pct_change: 19.2, year_first: 2022, year_last: 2024, earnings_value_last: 15860, earnings_currency: "INR" },
+      { rank: 2, isco_1_label: "Clerical support workers", pct_change: 16.9, year_first: 2022, year_last: 2024, earnings_value_last: 24388, earnings_currency: "INR" },
+      { rank: 3, isco_1_label: "Professionals", pct_change: 13.8, year_first: 2022, year_last: 2024, earnings_value_last: 36141, earnings_currency: "INR" },
+      { rank: 4, isco_1_label: "Elementary occupations", pct_change: 13, year_first: 2022, year_last: 2024, earnings_value_last: 10237, earnings_currency: "INR" },
+      { rank: 5, isco_1_label: "Technicians and associate professionals", pct_change: 12.4, year_first: 2022, year_last: 2024, earnings_value_last: 26037, earnings_currency: "INR" },
+    ],
+  },
+  KEN: {
+    top_employment_growth_majors: [
+      { rank: 1, isco_1_label: "Skilled agric., forestry and fishery workers", pct_change: 5.4, year_first: 2019, year_last: 2022 },
+      { rank: 2, isco_1_label: "Technicians and associate professionals", pct_change: 2.2, year_first: 2019, year_last: 2022 },
+      { rank: 3, isco_1_label: "Armed forces occupations", pct_change: 0, year_first: 2019, year_last: 2019 },
+      { rank: 4, isco_1_label: "Elementary occupations", pct_change: -31.8, year_first: 2019, year_last: 2022 },
+      { rank: 5, isco_1_label: "Service and sales workers", pct_change: -39.1, year_first: 2019, year_last: 2022 },
+    ],
+    top_earnings_growth_majors: [
+      { rank: 1, isco_1_label: "Armed forces occupations", pct_change: 0, year_first: 2019, year_last: 2019, earnings_value_last: 72033, earnings_currency: "KES" },
+      { rank: 2, isco_1_label: "Managers", pct_change: 0, year_first: 2019, year_last: 2019, earnings_value_last: 58575, earnings_currency: "KES" },
+      { rank: 3, isco_1_label: "Professionals", pct_change: 0, year_first: 2019, year_last: 2019, earnings_value_last: 31414, earnings_currency: "KES" },
+      { rank: 4, isco_1_label: "Technicians and associate professionals", pct_change: 0, year_first: 2019, year_last: 2019, earnings_value_last: 27865, earnings_currency: "KES" },
+      { rank: 5, isco_1_label: "Clerical support workers", pct_change: 0, year_first: 2019, year_last: 2019, earnings_value_last: 25366, earnings_currency: "KES" },
+    ],
+  },
+};
+
+// Source: /data/kpi_summary_2.json
+const KPI_DATA_2: Record<string, {
+  avg_earnings: number; earnings_currency: string;
+  earnings_year_first: number; earnings_year_last: number;
+  country_label: string;
+}> = {
+  BGD: { country_label: "Bangladesh", avg_earnings: 14582, earnings_currency: "BDT", earnings_year_first: 2013, earnings_year_last: 2024 },
+  GHA: { country_label: "Ghana",      avg_earnings: 2491,  earnings_currency: "GHS", earnings_year_first: 2013, earnings_year_last: 2024 },
+  IND: { country_label: "India",      avg_earnings: 15927, earnings_currency: "INR", earnings_year_first: 2022, earnings_year_last: 2024 },
+  KEN: { country_label: "Kenya",      avg_earnings: 11676, earnings_currency: "KES", earnings_year_first: 2019, earnings_year_last: 2019 },
+};
+
+const avgEarningsData = Object.values(KPI_DATA_2).map((d) => ({
+  country: d.country_label,
+  earnings: d.avg_earnings,
+  currency: d.earnings_currency,
+  period: `${d.earnings_year_first}–${d.earnings_year_last}`,
+}));
 
 // Source: /data/kpi_summary.json
 const KPI_DATA = [
@@ -299,31 +388,118 @@ export const MarketAnalysisPanel = () => {
         </Card>
       </section>
 
-      {/* Policy recommendations */}
-      <section>
-        <p className="eyebrow mb-2">Editorial</p>
-        <h3 className="font-serif text-3xl font-semibold mb-6 rule-top">Policy levers worth pulling</h3>
-        <div className="grid md:grid-cols-3 gap-6">
-          <Recommendation
-            number="I."
-            title="Address Kenya's labour-market contraction"
-            body="Kenya's workforce shrank 31.6% between 2019 and 2022 while earnings also fell 20.5% — a rare double-contraction signalling structural stress beyond a cyclical downturn."
-            tag="Labour markets"
-          />
-          <Recommendation
-            number="II."
-            title="Investigate Ghana's productivity paradox"
-            body="Ghana achieved 458.5% earnings growth between 2013 and 2024 despite an 18.4% fall in total workers. Understanding whether this reflects sectoral rebalancing or inflationary pressure is critical."
-            tag="Earnings"
-          />
-          <Recommendation
-            number="III."
-            title="Scale India's green-jobs pipeline"
-            body="India's workforce grew 22.8% but green-economy share remains flat at 4.5%. Given the scale of the workforce (468M), even a 1-point shift would represent millions of new green roles."
-            tag="Green economy"
-          />
-        </div>
+      {/* Charts row 3 — kpi_summary_2 */}
+      <section className="grid lg:grid-cols-12 gap-8">
+        <Card
+          className="lg:col-span-12"
+          eyebrow="Indicator 04"
+          title="Average earnings"
+          subtitle="Most recent average earnings figure per country (local currency)"
+        >
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={avgEarningsData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+              <CartesianGrid stroke={GRID_STROKE} vertical={false} />
+              <XAxis dataKey="country" tick={TICK} stroke={AXIS_STROKE} />
+              <YAxis tick={TICK} stroke={AXIS_STROKE} tickFormatter={(v) => v.toLocaleString()} />
+              <Tooltip
+                contentStyle={TOOLTIP_STYLE}
+                formatter={(v: number, _name, props) => [
+                  `${v.toLocaleString()} ${props.payload.currency}  (${props.payload.period})`,
+                  "Avg earnings",
+                ]}
+              />
+              <Bar dataKey="earnings" name="Avg earnings">
+                {avgEarningsData.map((d, i) => (
+                  <Cell key={i} fill={COLOR_POS} fillOpacity={barOpacity(d.country)} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+          <p className="text-xs text-muted-foreground font-mono mt-3">
+            Note: figures are in local currency and are not cross-currency comparable.
+            Currency codes: BDT · GHS · INR · KES.
+          </p>
+        </Card>
       </section>
+
+      {/* Charts row 4 — top_movers */}
+      {(() => {
+        const iso = selectedIso3 ?? "GHA";
+        const movers = TOP_MOVERS[iso];
+        const countryLabel = KPI_DATA.find((d) => d.country_iso3 === iso)?.country_label ?? iso;
+        const empData = movers.top_employment_growth_majors.map((d) => ({
+          label: d.isco_1_label,
+          pct: d.pct_change,
+          period: `${d.year_first}–${d.year_last}`,
+        }));
+        const earningsData = movers.top_earnings_growth_majors.map((d) => ({
+          label: d.isco_1_label,
+          pct: d.pct_change,
+          value: (d as TopEarner).earnings_value_last,
+          currency: (d as TopEarner).earnings_currency,
+          period: `${d.year_first}–${d.year_last}`,
+        }));
+        return (
+          <section className="grid lg:grid-cols-12 gap-8">
+            <Card
+              className="lg:col-span-6"
+              eyebrow="Indicator 05"
+              title="Top employment growth"
+              subtitle={`Top 5 ISCO major groups by employment growth — ${countryLabel} (%)`}
+            >
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart layout="vertical" data={empData} margin={{ top: 5, right: 20, left: 8, bottom: 0 }}>
+                  <CartesianGrid stroke={GRID_STROKE} horizontal={false} />
+                  <XAxis type="number" tick={TICK} stroke={AXIS_STROKE} tickFormatter={(v) => `${v}%`} />
+                  <YAxis type="category" dataKey="label" width={165} tick={{ ...TICK, width: 160, textAnchor: "end" }} stroke={AXIS_STROKE} />
+                  <ReferenceLine x={0} stroke="hsl(var(--foreground))" strokeWidth={1} />
+                  <Tooltip
+                    contentStyle={TOOLTIP_STYLE}
+                    formatter={(v: number, _n, props) => [
+                      `${v > 0 ? "+" : ""}${v}%  (${props.payload.period})`,
+                      "Employment change",
+                    ]}
+                  />
+                  <Bar dataKey="pct" name="Employment change %">
+                    {empData.map((d, i) => (
+                      <Cell key={i} fill={d.pct >= 0 ? COLOR_POS : COLOR_NEG} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </Card>
+
+            <Card
+              className="lg:col-span-6"
+              eyebrow="Indicator 06"
+              title="Top earnings growth"
+              subtitle={`Top 5 ISCO major groups by earnings growth — ${countryLabel} (%, local currency)`}
+            >
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart layout="vertical" data={earningsData} margin={{ top: 5, right: 20, left: 8, bottom: 0 }}>
+                  <CartesianGrid stroke={GRID_STROKE} horizontal={false} />
+                  <XAxis type="number" tick={TICK} stroke={AXIS_STROKE} tickFormatter={(v) => `${v}%`} />
+                  <YAxis type="category" dataKey="label" width={165} tick={{ ...TICK, width: 160, textAnchor: "end" }} stroke={AXIS_STROKE} />
+                  <ReferenceLine x={0} stroke="hsl(var(--foreground))" strokeWidth={1} />
+                  <Tooltip
+                    contentStyle={TOOLTIP_STYLE}
+                    formatter={(v: number, _n, props) => [
+                      `${v > 0 ? "+" : ""}${v}%  · ${props.payload.value?.toLocaleString()} ${props.payload.currency}  (${props.payload.period})`,
+                      "Earnings change",
+                    ]}
+                  />
+                  <Bar dataKey="pct" name="Earnings change %">
+                    {earningsData.map((d, i) => (
+                      <Cell key={i} fill={d.pct >= 0 ? COLOR_POS : COLOR_NEG} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </Card>
+          </section>
+        );
+      })()}
+
     </div>
   );
 };
@@ -360,20 +536,3 @@ const Card = ({
   </div>
 );
 
-const Recommendation = ({
-  number, title, body, tag,
-}: {
-  number: string; title: string; body: string; tag: string;
-}) => (
-  <article className="border-t-2 border-foreground pt-4 group cursor-pointer">
-    <div className="flex items-start justify-between mb-2">
-      <span className="font-serif text-2xl text-accent">{number}</span>
-      <span className="eyebrow flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> {tag}</span>
-    </div>
-    <h4 className="font-serif text-xl font-semibold leading-tight mb-2">{title}</h4>
-    <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
-    <div className="text-xs font-mono uppercase tracking-wider mt-4 flex items-center gap-1 group-hover:text-accent transition-colors">
-      Read full memo <ArrowRight className="h-3 w-3" />
-    </div>
-  </article>
-);

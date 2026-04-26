@@ -50,6 +50,10 @@ const TECH_SKILL_OPTIONS = [
   "Cooking / food prep",
   "Construction",
   "Vehicle repair",
+  "Species identification",
+  "Data collection",
+  "Maritime safety",
+  "Log / report writing",
   "Other",
 ];
 
