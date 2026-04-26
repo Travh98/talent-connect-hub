@@ -15,7 +15,7 @@ import os
 from fastapi import APIRouter, Depends, HTTPException
 from openai import OpenAI
 
-from . import consts
+from . import consts, signer
 from .country_pack import load_pack
 from .dashboard_loader import get_anchor_rows, get_known_countries
 from .kpi_loader import get_kpi_summary, get_top_movers
@@ -56,7 +56,30 @@ def generate_passport(
 
     normalization = extract_skills(profile, openai_client)
     passport = build_passport(normalization.skill_extractions, country_pack)
-    return passport.to_jsonld()
+    return signer.sign_passport(passport.to_jsonld())
+
+
+@router.post("/verify")
+def verify_passport_route(body: dict) -> dict:
+    """Verify the Ed25519 proof on a signed passport. Returns {valid: bool}."""
+    passport = body.get("passport")
+    if not isinstance(passport, dict):
+        raise HTTPException(
+            status_code=consts.HTTP_STATUS_BAD_REQUEST,
+            detail="Request body must be {\"passport\": <passport object>}",
+        )
+    valid = signer.verify_passport(passport)
+    return {"valid": valid, "verification_method": signer.get_verification_method()}
+
+
+@router.get("/public-key")
+def get_public_key() -> dict:
+    """Return the Ed25519 public key PEM and verification method identifier."""
+    return {
+        "public_key_pem": signer.get_public_key_pem(),
+        "verification_method": signer.get_verification_method(),
+        "algorithm": "Ed25519",
+    }
 
 
 @router.get("/health")

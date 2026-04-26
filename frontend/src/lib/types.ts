@@ -38,6 +38,14 @@ export type SkillClaim = {
   "esco:iscoCode"?: string;
 };
 
+export type PassportProof = {
+  type: string;
+  created: string;
+  verificationMethod: string;
+  proofPurpose: string;
+  proofValue: string;
+};
+
 export type JsonLdPassport = {
   "@context": Record<string, string>;
   "@type": string;
@@ -47,6 +55,7 @@ export type JsonLdPassport = {
   "passport:country": string;
   "passport:locale": string;
   "passport:skillClaims": SkillClaim[];
+  proof?: PassportProof;
 };
 
 export type SectorRow = {

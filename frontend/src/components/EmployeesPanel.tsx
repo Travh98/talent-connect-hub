@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CheckCircle2, Download, Loader2, Sparkles } from "lucide-react";
+import { CheckCircle2, Download, Loader2, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -97,7 +97,14 @@ function PassportCard({ passport }: { passport: JsonLdPassport }) {
 
   return (
     <div className="bg-card border border-foreground/15 p-6 shadow-[var(--shadow-editorial)] mt-6">
-      <p className="eyebrow mb-1">Skills passport · issued {issuedAt}</p>
+      <div className="flex items-center justify-between gap-4 mb-1">
+        <p className="eyebrow">Skills passport · issued {issuedAt}</p>
+        {passport.proof && (
+          <Badge variant="outline" className="rounded-none text-[10px] font-mono border-foreground/30 text-teal-600 flex items-center gap-1 shrink-0">
+            <ShieldCheck className="h-3 w-3" /> Cryptographically signed · Ed25519
+          </Badge>
+        )}
+      </div>
       <div className="border-t-2 border-foreground mt-2 pt-4 space-y-2">
         {claims.map((c: SkillClaim, i: number) => (
           <div key={i} className="flex items-start justify-between gap-4 text-sm py-1 border-b border-dashed border-foreground/10">

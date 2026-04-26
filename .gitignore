@@ -49,3 +49,7 @@ htmlcov/
 # Embedding cache
 *.npy
 backend/cache/
+
+# Signing keys (auto-generated on first server start — never commit)
+keys/
+*.pem

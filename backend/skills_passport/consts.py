@@ -72,3 +72,9 @@ TOP_MOVERS_JSON_PATH_DEFAULT: Path = _REPO_DIR / "data" / "top_movers.json"
 # Matching
 MATCH_TOP_N_DEFAULT: int = 5
 MATCH_SKILL_GAPS_LIMIT: int = 3
+
+# Ed25519 signing
+ED25519_PRIVATE_KEY_PATH_DEFAULT: Path = _REPO_DIR / "keys" / "passport_signing_key.pem"
+ED25519_PUBLIC_KEY_PATH_DEFAULT: Path = _REPO_DIR / "keys" / "passport_verifying_key.pem"
+JSONLD_TYPE_PROOF: str = "Ed25519Signature2020"
+PASSPORT_VERIFICATION_METHOD_DEFAULT: str = "did:web:candidateconnect.local#key-1"

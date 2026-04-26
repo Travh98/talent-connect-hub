@@ -79,6 +79,10 @@ def test_generate_returns_jsonld(mock_extract, mock_build, client):
     body = response.json()
     assert body["@type"] == consts.JSONLD_TYPE_PASSPORT
     assert "@context" in body
+    # Proof block must be present and populated
+    assert "proof" in body
+    assert body["proof"]["type"] == consts.JSONLD_TYPE_PROOF
+    assert body["proof"]["proofValue"]
 
 
 @patch("skills_passport.router.build_passport")
@@ -206,3 +210,48 @@ def test_top_movers_returns_shape(mock_movers, client):
 def test_top_movers_unknown_country_returns_404(mock_movers, client):
     response = client.get("/market/ZZZ/top-movers")
     assert response.status_code == consts.HTTP_STATUS_NOT_FOUND
+
+
+# ── /passport/verify ────────────────────────────────────────────────────────
+
+@patch("skills_passport.router.build_passport")
+@patch("skills_passport.router.extract_skills")
+def test_verify_valid_passport_returns_true(mock_extract, mock_build, client):
+    mock_extract.return_value = NormalizationResult(skill_extractions=[])
+    mock_build.return_value = _make_passport()
+
+    signed = client.post("/passport/generate", json=VALID_PAYLOAD).json()
+    response = client.post("/passport/verify", json={"passport": signed})
+
+    assert response.status_code == 200
+    assert response.json()["valid"] is True
+
+
+@patch("skills_passport.router.build_passport")
+@patch("skills_passport.router.extract_skills")
+def test_verify_tampered_passport_returns_false(mock_extract, mock_build, client):
+    mock_extract.return_value = NormalizationResult(skill_extractions=[])
+    mock_build.return_value = _make_passport()
+
+    signed = client.post("/passport/generate", json=VALID_PAYLOAD).json()
+    signed["passport:country"] = "ZZZ"
+    response = client.post("/passport/verify", json={"passport": signed})
+
+    assert response.status_code == 200
+    assert response.json()["valid"] is False
+
+
+def test_verify_missing_passport_field_returns_400(client):
+    response = client.post("/passport/verify", json={"not_a_passport": {}})
+    assert response.status_code == consts.HTTP_STATUS_BAD_REQUEST
+
+
+# ── /passport/public-key ─────────────────────────────────────────────────────
+
+def test_public_key_returns_pem(client):
+    response = client.get("/passport/public-key")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["public_key_pem"].startswith("-----BEGIN PUBLIC KEY-----")
+    assert body["algorithm"] == "Ed25519"
+    assert body["verification_method"]
