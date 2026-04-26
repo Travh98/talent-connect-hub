@@ -1,5 +1,5 @@
-country_iso3,country_label,workers_total_k,workers_year,top_growing_occupation,top_growing_isco4,top_growing_pct,avg_earnings,earnings_currency,earnings_year,top_paid_occupation,top_paid_isco4,top_paid_value,top_green_occupation,top_green_isco4,top_green_pct
-BGD,Bangladesh,67834,2024,Garbage and recycling collectors,9611,140.7,14582,BDT,2024,Legislators,1111,37690,Garbage and recycling collectors,9611,51.5
-GHA,Ghana,9448,2017,Medical imaging and therapeutic equipment technicians,3211,107,2491,GHS,2024,Commissioned armed forces officers,0110,4194,Garbage and recycling collectors,9611,51.5
-IND,India,468374,2024,Agricultural and forestry production managers,1311,137.8,15927,INR,2024,Legislators,1111,44669,Garbage and recycling collectors,9611,51.5
-KEN,Kenya,14456,2022,Securities and finance dealers and brokers,3311,134.2,11676,KES,2019,Commissioned armed forces officers,0110,72033,Garbage and recycling collectors,9611,51.5
+country_iso3,country_label,total_workers_k,workers_delta_pct,workers_year_first,workers_year_last,avg_earnings,earnings_currency,earnings_delta_pct,earnings_year_first,earnings_year_last
+BGD,Bangladesh,67834,12,2017,2024,14582,BDT,35.1,2013,2024
+GHA,Ghana,9448,-18.4,2013,2017,2491,GHS,458.5,2013,2024
+IND,India,468374,22.8,2018,2024,15927,INR,-3.8,2022,2024
+KEN,Kenya,14456,-31.6,2019,2022,11676,KES,-20.5,2019,2019

@@ -1,74 +1,54 @@
-[
-  {
+{
+  "BGD": {
     "country_iso3": "BGD",
     "country_label": "Bangladesh",
-    "workers_total_k": 67834,
-    "workers_year": 2024,
-    "top_growing_occupation": "Garbage and recycling collectors",
-    "top_growing_isco4": "9611",
-    "top_growing_pct": 140.7,
+    "total_workers_k": 67834,
+    "workers_delta_pct": 12,
+    "workers_year_first": 2017,
+    "workers_year_last": 2024,
     "avg_earnings": 14582,
     "earnings_currency": "BDT",
-    "earnings_year": 2024,
-    "top_paid_occupation": "Legislators",
-    "top_paid_isco4": "1111",
-    "top_paid_value": 37690,
-    "top_green_occupation": "Garbage and recycling collectors",
-    "top_green_isco4": "9611",
-    "top_green_pct": 51.5
+    "earnings_delta_pct": 35.1,
+    "earnings_year_first": 2013,
+    "earnings_year_last": 2024
   },
-  {
+  "GHA": {
     "country_iso3": "GHA",
     "country_label": "Ghana",
-    "workers_total_k": 9448,
-    "workers_year": 2017,
-    "top_growing_occupation": "Medical imaging and therapeutic equipment technicians",
-    "top_growing_isco4": "3211",
-    "top_growing_pct": 107,
+    "total_workers_k": 9448,
+    "workers_delta_pct": -18.4,
+    "workers_year_first": 2013,
+    "workers_year_last": 2017,
     "avg_earnings": 2491,
     "earnings_currency": "GHS",
-    "earnings_year": 2024,
-    "top_paid_occupation": "Commissioned armed forces officers",
-    "top_paid_isco4": "0110",
-    "top_paid_value": 4194,
-    "top_green_occupation": "Garbage and recycling collectors",
-    "top_green_isco4": "9611",
-    "top_green_pct": 51.5
+    "earnings_delta_pct": 458.5,
+    "earnings_year_first": 2013,
+    "earnings_year_last": 2024
   },
-  {
+  "IND": {
     "country_iso3": "IND",
     "country_label": "India",
-    "workers_total_k": 468374,
-    "workers_year": 2024,
-    "top_growing_occupation": "Agricultural and forestry production managers",
-    "top_growing_isco4": "1311",
-    "top_growing_pct": 137.8,
+    "total_workers_k": 468374,
+    "workers_delta_pct": 22.8,
+    "workers_year_first": 2018,
+    "workers_year_last": 2024,
     "avg_earnings": 15927,
     "earnings_currency": "INR",
-    "earnings_year": 2024,
-    "top_paid_occupation": "Legislators",
-    "top_paid_isco4": "1111",
-    "top_paid_value": 44669,
-    "top_green_occupation": "Garbage and recycling collectors",
-    "top_green_isco4": "9611",
-    "top_green_pct": 51.5
+    "earnings_delta_pct": -3.8,
+    "earnings_year_first": 2022,
+    "earnings_year_last": 2024
   },
-  {
+  "KEN": {
     "country_iso3": "KEN",
     "country_label": "Kenya",
-    "workers_total_k": 14456,
-    "workers_year": 2022,
-    "top_growing_occupation": "Securities and finance dealers and brokers",
-    "top_growing_isco4": "3311",
-    "top_growing_pct": 134.2,
+    "total_workers_k": 14456,
+    "workers_delta_pct": -31.6,
+    "workers_year_first": 2019,
+    "workers_year_last": 2022,
     "avg_earnings": 11676,
     "earnings_currency": "KES",
-    "earnings_year": 2019,
-    "top_paid_occupation": "Commissioned armed forces officers",
-    "top_paid_isco4": "0110",
-    "top_paid_value": 72033,
-    "top_green_occupation": "Garbage and recycling collectors",
-    "top_green_isco4": "9611",
-    "top_green_pct": 51.5
+    "earnings_delta_pct": -20.5,
+    "earnings_year_first": 2019,
+    "earnings_year_last": 2019
   }
-]
+}

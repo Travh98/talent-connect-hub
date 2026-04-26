@@ -1,0 +1,494 @@
+{
+  "BGD": {
+    "country_iso3": "BGD",
+    "country_label": "Bangladesh",
+    "top_employment_growth_majors": [
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 1,
+        "isco_1_code": "3",
+        "isco_1_label": "Technicians and associate professionals",
+        "pct_change": 59.4,
+        "year_first": 2017,
+        "year_last": 2024,
+        "workers_thousands": 1803
+      },
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 2,
+        "isco_1_code": "8",
+        "isco_1_label": "Plant and machine operators, and assemblers",
+        "pct_change": 44.6,
+        "year_first": 2017,
+        "year_last": 2024,
+        "workers_thousands": 6018
+      },
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 3,
+        "isco_1_code": "6",
+        "isco_1_label": "Skilled agricultural, forestry and fishery workers",
+        "pct_change": 43.4,
+        "year_first": 2017,
+        "year_last": 2024,
+        "workers_thousands": 27894
+      },
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 4,
+        "isco_1_code": "2",
+        "isco_1_label": "Professionals",
+        "pct_change": 5.3,
+        "year_first": 2017,
+        "year_last": 2024,
+        "workers_thousands": 3087
+      },
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 5,
+        "isco_1_code": "5",
+        "isco_1_label": "Service and sales workers",
+        "pct_change": 1,
+        "year_first": 2017,
+        "year_last": 2024,
+        "workers_thousands": 10122
+      }
+    ],
+    "top_earnings_growth_majors": [
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 1,
+        "isco_1_code": "0",
+        "isco_1_label": "Armed forces occupations",
+        "pct_change": 91.1,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 28908,
+        "earnings_currency": "BDT"
+      },
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 2,
+        "isco_1_code": "1",
+        "isco_1_label": "Managers",
+        "pct_change": 89.7,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 37690,
+        "earnings_currency": "BDT"
+      },
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 3,
+        "isco_1_code": "4",
+        "isco_1_label": "Clerical support workers",
+        "pct_change": 68,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 22678,
+        "earnings_currency": "BDT"
+      },
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 4,
+        "isco_1_code": "3",
+        "isco_1_label": "Technicians and associate professionals",
+        "pct_change": 46,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 22517,
+        "earnings_currency": "BDT"
+      },
+      {
+        "country_iso3": "BGD",
+        "country_label": "Bangladesh",
+        "rank": 5,
+        "isco_1_code": "2",
+        "isco_1_label": "Professionals",
+        "pct_change": 41.9,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 23053,
+        "earnings_currency": "BDT"
+      }
+    ]
+  },
+  "GHA": {
+    "country_iso3": "GHA",
+    "country_label": "Ghana",
+    "top_employment_growth_majors": [
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 1,
+        "isco_1_code": "7",
+        "isco_1_label": "Craft and related trades workers",
+        "pct_change": 37.7,
+        "year_first": 2013,
+        "year_last": 2017,
+        "workers_thousands": 2052
+      },
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 2,
+        "isco_1_code": "1",
+        "isco_1_label": "Managers",
+        "pct_change": 19.7,
+        "year_first": 2013,
+        "year_last": 2017,
+        "workers_thousands": 205
+      },
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 3,
+        "isco_1_code": "8",
+        "isco_1_label": "Plant and machine operators, and assemblers",
+        "pct_change": 19.2,
+        "year_first": 2013,
+        "year_last": 2017,
+        "workers_thousands": 626
+      },
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 4,
+        "isco_1_code": "4",
+        "isco_1_label": "Clerical support workers",
+        "pct_change": 18.6,
+        "year_first": 2013,
+        "year_last": 2017,
+        "workers_thousands": 182
+      },
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 5,
+        "isco_1_code": "2",
+        "isco_1_label": "Professionals",
+        "pct_change": 18.5,
+        "year_first": 2013,
+        "year_last": 2017,
+        "workers_thousands": 709
+      }
+    ],
+    "top_earnings_growth_majors": [
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 1,
+        "isco_1_code": "5",
+        "isco_1_label": "Service and sales workers",
+        "pct_change": 356.8,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 2032,
+        "earnings_currency": "GHS"
+      },
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 2,
+        "isco_1_code": "3",
+        "isco_1_label": "Technicians and associate professionals",
+        "pct_change": 319.5,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 2756,
+        "earnings_currency": "GHS"
+      },
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 3,
+        "isco_1_code": "8",
+        "isco_1_label": "Plant and machine operators, and assemblers",
+        "pct_change": 302.3,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 2595,
+        "earnings_currency": "GHS"
+      },
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 4,
+        "isco_1_code": "1",
+        "isco_1_label": "Managers",
+        "pct_change": 225,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 3929,
+        "earnings_currency": "GHS"
+      },
+      {
+        "country_iso3": "GHA",
+        "country_label": "Ghana",
+        "rank": 5,
+        "isco_1_code": "4",
+        "isco_1_label": "Clerical support workers",
+        "pct_change": 215.1,
+        "year_first": 2013,
+        "year_last": 2024,
+        "earnings_value_last": 2213,
+        "earnings_currency": "GHS"
+      }
+    ]
+  },
+  "IND": {
+    "country_iso3": "IND",
+    "country_label": "India",
+    "top_employment_growth_majors": [
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 1,
+        "isco_1_code": "5",
+        "isco_1_label": "Service and sales workers",
+        "pct_change": 57.5,
+        "year_first": 2018,
+        "year_last": 2024,
+        "workers_thousands": 60396
+      },
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 2,
+        "isco_1_code": "6",
+        "isco_1_label": "Skilled agricultural, forestry and fishery workers",
+        "pct_change": 50.9,
+        "year_first": 2018,
+        "year_last": 2024,
+        "workers_thousands": 155669
+      },
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 3,
+        "isco_1_code": "8",
+        "isco_1_label": "Plant and machine operators, and assemblers",
+        "pct_change": 39,
+        "year_first": 2018,
+        "year_last": 2024,
+        "workers_thousands": 28454
+      },
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 4,
+        "isco_1_code": "2",
+        "isco_1_label": "Professionals",
+        "pct_change": 30.1,
+        "year_first": 2018,
+        "year_last": 2024,
+        "workers_thousands": 27347
+      },
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 5,
+        "isco_1_code": "9",
+        "isco_1_label": "Elementary occupations",
+        "pct_change": 20.6,
+        "year_first": 2018,
+        "year_last": 2024,
+        "workers_thousands": 102156
+      }
+    ],
+    "top_earnings_growth_majors": [
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 1,
+        "isco_1_code": "7",
+        "isco_1_label": "Craft and related trades workers",
+        "pct_change": 19.2,
+        "year_first": 2022,
+        "year_last": 2024,
+        "earnings_value_last": 15860,
+        "earnings_currency": "INR"
+      },
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 2,
+        "isco_1_code": "4",
+        "isco_1_label": "Clerical support workers",
+        "pct_change": 16.9,
+        "year_first": 2022,
+        "year_last": 2024,
+        "earnings_value_last": 24388,
+        "earnings_currency": "INR"
+      },
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 3,
+        "isco_1_code": "2",
+        "isco_1_label": "Professionals",
+        "pct_change": 13.8,
+        "year_first": 2022,
+        "year_last": 2024,
+        "earnings_value_last": 36141,
+        "earnings_currency": "INR"
+      },
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 4,
+        "isco_1_code": "9",
+        "isco_1_label": "Elementary occupations",
+        "pct_change": 13,
+        "year_first": 2022,
+        "year_last": 2024,
+        "earnings_value_last": 10237,
+        "earnings_currency": "INR"
+      },
+      {
+        "country_iso3": "IND",
+        "country_label": "India",
+        "rank": 5,
+        "isco_1_code": "3",
+        "isco_1_label": "Technicians and associate professionals",
+        "pct_change": 12.4,
+        "year_first": 2022,
+        "year_last": 2024,
+        "earnings_value_last": 26037,
+        "earnings_currency": "INR"
+      }
+    ]
+  },
+  "KEN": {
+    "country_iso3": "KEN",
+    "country_label": "Kenya",
+    "top_employment_growth_majors": [
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 1,
+        "isco_1_code": "6",
+        "isco_1_label": "Skilled agricultural, forestry and fishery workers",
+        "pct_change": 5.4,
+        "year_first": 2019,
+        "year_last": 2022,
+        "workers_thousands": 5446
+      },
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 2,
+        "isco_1_code": "3",
+        "isco_1_label": "Technicians and associate professionals",
+        "pct_change": 2.2,
+        "year_first": 2019,
+        "year_last": 2022,
+        "workers_thousands": 609
+      },
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 3,
+        "isco_1_code": "0",
+        "isco_1_label": "Armed forces occupations",
+        "pct_change": 0,
+        "year_first": 2019,
+        "year_last": 2019,
+        "workers_thousands": 72
+      },
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 4,
+        "isco_1_code": "9",
+        "isco_1_label": "Elementary occupations",
+        "pct_change": -31.8,
+        "year_first": 2019,
+        "year_last": 2022,
+        "workers_thousands": 4499
+      },
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 5,
+        "isco_1_code": "5",
+        "isco_1_label": "Service and sales workers",
+        "pct_change": -39.1,
+        "year_first": 2019,
+        "year_last": 2022,
+        "workers_thousands": 1518
+      }
+    ],
+    "top_earnings_growth_majors": [
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 1,
+        "isco_1_code": "0",
+        "isco_1_label": "Armed forces occupations",
+        "pct_change": 0,
+        "year_first": 2019,
+        "year_last": 2019,
+        "earnings_value_last": 72033,
+        "earnings_currency": "KES"
+      },
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 2,
+        "isco_1_code": "1",
+        "isco_1_label": "Managers",
+        "pct_change": 0,
+        "year_first": 2019,
+        "year_last": 2019,
+        "earnings_value_last": 58575,
+        "earnings_currency": "KES"
+      },
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 3,
+        "isco_1_code": "2",
+        "isco_1_label": "Professionals",
+        "pct_change": 0,
+        "year_first": 2019,
+        "year_last": 2019,
+        "earnings_value_last": 31414,
+        "earnings_currency": "KES"
+      },
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 4,
+        "isco_1_code": "3",
+        "isco_1_label": "Technicians and associate professionals",
+        "pct_change": 0,
+        "year_first": 2019,
+        "year_last": 2019,
+        "earnings_value_last": 27865,
+        "earnings_currency": "KES"
+      },
+      {
+        "country_iso3": "KEN",
+        "country_label": "Kenya",
+        "rank": 5,
+        "isco_1_code": "4",
+        "isco_1_label": "Clerical support workers",
+        "pct_change": 0,
+        "year_first": 2019,
+        "year_last": 2019,
+        "earnings_value_last": 25366,
+        "earnings_currency": "KES"
+      }
+    ]
+  }
+}
