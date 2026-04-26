@@ -3,6 +3,7 @@ import { CheckCircle2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
@@ -139,6 +140,9 @@ export const EmployeesPanel = () => {
   const [hasInternet, setHasInternet] = useState<boolean | null>(null);
   const [workSchedule, setWorkSchedule] = useState("");
 
+  // ── Additional skills ──────────────────────────────────────────────────────
+  const [freeSkills, setFreeSkills] = useState("");
+
   // ── Completion meter ───────────────────────────────────────────────────────
   const answered = [
     country,
@@ -154,8 +158,9 @@ export const EmployeesPanel = () => {
     canTravel !== null,
     hasInternet !== null,
     workSchedule,
+    freeSkills,
   ].filter(Boolean).length;
-  const completion = Math.round((answered / 13) * 100);
+  const completion = Math.round((answered / 14) * 100);
 
   return (
     <div className="grid lg:grid-cols-12 gap-10">
@@ -348,6 +353,27 @@ export const EmployeesPanel = () => {
               </div>
             </div>
 
+          </div>
+        </section>
+
+        {/* Section 5 — Additional skills */}
+        <section>
+          <p className="eyebrow mb-2">Step 05 · Skills</p>
+          <h2 className="font-serif text-3xl font-semibold mb-5">Anything else?</h2>
+          <div className="space-y-6">
+            <div>
+              <Label htmlFor="freeSkills" className="text-sm">
+                Describe any other skills, abilities, or experience you'd like employers to know about.
+              </Label>
+              <Textarea
+                id="freeSkills"
+                value={freeSkills}
+                onChange={(e) => setFreeSkills(e.target.value)}
+                placeholder="e.g. I can read technical manuals in English, I have experience training community health workers, I built a small irrigation system for my village…"
+                className="mt-2 min-h-[120px] bg-card"
+              />
+            </div>
+
             <Button
               onClick={() => toast.success("Profile published to CandidateConnect")}
               className="bg-foreground text-background hover:bg-accent rounded-none px-6"
@@ -414,7 +440,7 @@ export const EmployeesPanel = () => {
                   {canTravel === null ? "—" : canTravel ? "Yes" : "No"}
                 </dd>
               </div>
-              <div>
+              <div className="border-b border-dashed border-foreground/15 pb-3">
                 <dt className="text-muted-foreground mb-2">Technical skills</dt>
                 <dd className="flex flex-wrap gap-1.5">
                   {techSkills.length === 0 && (
@@ -425,6 +451,16 @@ export const EmployeesPanel = () => {
                       {s}
                     </Badge>
                   ))}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-muted-foreground mb-1">Additional skills</dt>
+                <dd className="text-sm leading-snug">
+                  {freeSkills
+                    ? freeSkills.length > 120
+                      ? freeSkills.slice(0, 120) + "…"
+                      : freeSkills
+                    : <span className="italic text-muted-foreground">Not yet entered</span>}
                 </dd>
               </div>
             </dl>
