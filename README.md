@@ -1,3 +1,4 @@
+![Connect Careers to the Right People](docs/CandidateConnectDemo.gif)
 # UNMAPPED — CandidateConnect
 
 A skills passport and labour market matching system for informal workers in low- and middle-income countries. Built on the ILO ESCO taxonomy and ILOSTAT employment data.
